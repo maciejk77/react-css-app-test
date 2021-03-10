@@ -7,6 +7,11 @@ const Lister = () => {
   const [loading, setLoading] = useState(true);
   const [allPosts, setPosts] = useState([]);
 
+  const lastIndex = allPosts.reduce(
+    (acc, post) => (acc = acc > post.id ? acc : post.id),
+    0
+  );
+
   useEffect(() => {
     getPosts().then((data) => {
       setPosts(data);
@@ -20,7 +25,7 @@ const Lister = () => {
   };
 
   const onCreatePost = (post) => {
-    setPosts([...allPosts, post]);
+    setPosts([...allPosts, { id: lastIndex + 1, ...post }]);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -28,11 +33,11 @@ const Lister = () => {
   return (
     <div className="postList">
       {!allPosts.length ? (
-        <>No posts available...</>
+        <h2>No posts available...</h2>
       ) : (
-        allPosts.map(({ id, title, body, author }) => (
+        allPosts.map(({ id, title, body, author }, idx) => (
           <Post
-            key={`post-${id}`}
+            key={idx}
             id={id}
             title={title}
             body={body}
@@ -48,3 +53,25 @@ const Lister = () => {
 };
 
 export default Lister;
+
+// Beyond the scope of the test, but I would refactor for readability as below...
+// ...
+//   const renderPosts = allPosts.map(({ id, title, body, author }, idx) => (
+//     <Post
+//       key={idx}
+//       id={id}
+//       title={title}
+//       body={body}
+//       author={author}
+//       onDelete={onDeletePost}
+//     />
+//   ));
+
+//   return (
+//     <div className="postList">
+//       {!allPosts.length ? <h2>No posts available...</h2> : renderPosts}
+
+//       <CreatePost onCreate={onCreatePost} />
+//     </div>
+//   );
+// ...
