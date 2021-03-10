@@ -1,4 +1,4 @@
-# Sorted Group tech tests
+# SG tech tests
 
 ## Test details
 
@@ -8,8 +8,8 @@ Please complete the following tasks:
 
 - Update the header CSS so that the logo and heading sit next to each other, and are centered horizontally and vertically (note: this project uses pure CSS)
 - In the Lister component:
-    - Implement render code so that the tests pass
-    - Implement onCreatePost and onDeletePost. Do not attempt to persist the changes - just update state. The `<CreatePost />` component has already been created for you
+  - Implement render code so that the tests pass
+  - Implement onCreatePost and onDeletePost. Do not attempt to persist the changes - just update state. The `<CreatePost />` component has already been created for you
 - Implement the reducer in the CreatePost component so that the tests pass
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

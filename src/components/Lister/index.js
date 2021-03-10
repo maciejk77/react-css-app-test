@@ -1,39 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import getPosts from '../../services/posts';
-import Post from './Post'
+import Post from './Post';
 import CreatePost from './CreatePost';
 
 const Lister = () => {
+  const [loading, setLoading] = useState(true);
+  const [allPosts, setPosts] = useState([]);
 
-	const [loading, setLoading] = useState(true);
-	const [allPosts, setPosts] = useState([]);
+  useEffect(() => {
+    getPosts().then((data) => {
+      setPosts(data);
+      setLoading(false);
+    });
+  }, []);
 
-	useEffect(() => {
-		getPosts().then(data => {
-			setLoading(false);
-			setPosts(data);
-		});
-	}, []);
+  const onDeletePost = (id) => {
+    const filteredPosts = allPosts.filter((post) => post.id !== id);
+    setPosts(filteredPosts);
+  };
 
-	return <div>TODO - wire up lister component</div>
+  const onCreatePost = (post) => {
+    setPosts([...allPosts, post]);
+  };
 
-	const onDeletePost = (id) => {
-		// TODO: implement
-	}
+  if (loading) return <div>Loading...</div>;
 
-	const onCreatePost = post => {
-		// TODO: implement
-	}
+  return (
+    <div className="postList">
+      {!allPosts.length ? (
+        <>No posts available...</>
+      ) : (
+        allPosts.map(({ id, title, body, author }) => (
+          <Post
+            key={`post-${id}`}
+            id={id}
+            title={title}
+            body={body}
+            author={author}
+            onDelete={onDeletePost}
+          />
+        ))
+      )}
 
-	// TODO: implement render method, using Post and CreatePost e.g.
-	//				...
-	// 				<div className="postList">
-	//					...
-	//					<CreatePost />
-	// 				</div>
-	//				...
-
-
+      <CreatePost onCreate={onCreatePost} />
+    </div>
+  );
 };
 
 export default Lister;
