@@ -6,6 +6,7 @@ import CreatePost from './CreatePost';
 const Lister = () => {
   const [loading, setLoading] = useState(true);
   const [allPosts, setPosts] = useState([]);
+  const [keyword, setKeyword] = useState('');
 
   const lastIndex = allPosts.reduce(
     (acc, post) => (acc = acc > post.id ? acc : post.id),
@@ -30,24 +31,33 @@ const Lister = () => {
 
   if (loading) return <div>Loading...</div>;
 
-  return (
-    <div className="postList">
-      {!allPosts.length ? (
-        <h2>No posts available...</h2>
-      ) : (
-        allPosts.map(({ id, title, body, author }, idx) => (
-          <Post
-            key={idx}
-            id={id}
-            title={title}
-            body={body}
-            author={author}
-            onDelete={onDeletePost}
-          />
-        ))
-      )}
+  const handleChange = (e) => {
+    setKeyword(e.target.value);
+  };
 
-      <CreatePost onCreate={onCreatePost} />
+  const filteredPosts = allPosts.filter((post) => post.title === keyword);
+
+  return (
+    <div>
+      <input value={keyword} onChange={handleChange} />
+      <div className="postList">
+        {!allPosts.length ? (
+          <h2>No posts available...</h2>
+        ) : (
+          filteredPosts.map(({ id, title, body, author }, idx) => (
+            <Post
+              key={idx}
+              id={id}
+              title={title}
+              body={body}
+              author={author}
+              onDelete={onDeletePost}
+            />
+          ))
+        )}
+
+        <CreatePost onCreate={onCreatePost} />
+      </div>
     </div>
   );
 };
