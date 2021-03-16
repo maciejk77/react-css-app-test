@@ -35,7 +35,10 @@ const Lister = () => {
     setKeyword(e.target.value);
   };
 
-  const filteredPosts = allPosts.filter((post) => post.title.includes(keyword));
+  const filteredPosts = allPosts.filter((post) =>
+    // case insensitive and filtering by keyword matching as substring of post title
+    post.title.toLowerCase().includes(keyword.toLowerCase())
+  );
 
   return (
     <div>
