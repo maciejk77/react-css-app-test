@@ -35,7 +35,7 @@ const Lister = () => {
     setKeyword(e.target.value);
   };
 
-  const filteredPosts = allPosts.filter((post) => post.title === keyword);
+  const filteredPosts = allPosts.filter((post) => post.title.includes(keyword));
 
   return (
     <div>
